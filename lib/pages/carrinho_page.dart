@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:padaria/models/produtos.dart';
 import 'package:padaria/pages/selection_page.dart';
 
+import '../repositories/cart_db.dart';
+
 // ignore: must_be_immutable
 class CarrinhoPage extends StatefulWidget {
   SelectionPageState selectionPageState = SelectionPageState();
@@ -19,31 +21,34 @@ class CarrinhoPageState extends State<CarrinhoPage> {
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
   listaCarrinho() {
-    if (widget.itemCarrinho.isEmpty) {
+    if (carrinho.isEmpty) {
       return const Center(
         child: Text('Não há nada no carrinho'),
       );
     } else {
       return ListView.separated(
           itemBuilder: (BuildContext context, int produto) {
-            return ListTile(
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: ListTile(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
                 ),
-              ),
-              leading: SizedBox(
-                width: 80,
-                child: Image.asset(widget.itemCarrinho[produto].image),
-              ),
-              title: Text(widget.itemCarrinho[produto].name),
-              trailing: Text(
-                real.format(widget.itemCarrinho[produto].price),
+                leading: SizedBox(
+                  width: 80,
+                  child: Image.asset(carrinho[produto].image),
+                ),
+                title: Text(carrinho[produto].name),
+                trailing: Text(
+                  real.format(carrinho[produto].price),
+                ),
               ),
             );
           },
           separatorBuilder: (_, __) => const Divider(),
-          itemCount: widget.itemCarrinho.length);
+          itemCount: carrinho.length);
     }
   }
 
