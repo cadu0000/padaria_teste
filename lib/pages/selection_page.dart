@@ -6,6 +6,8 @@ import 'package:padaria/repositories/produtos_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
+import '../repositories/cart_db.dart';
+
 class SelectionPage extends StatefulWidget {
   const SelectionPage({super.key});
 
@@ -82,6 +84,7 @@ class SelectionPageState extends State<SelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(selecionadas);
     return Scaffold(
       appBar: appBarDinamica(),
       body: ListView.separated(
@@ -107,7 +110,7 @@ class SelectionPageState extends State<SelectionPage> {
             trailing: IconButton(
               onPressed: () {
                 setState(() {
-                  itemCarrinho.add(listaProduto[produto]);
+                  carrinho.add(listaProduto[produto]);
                 });
               },
               icon: const Icon(Icons.shopping_cart),
@@ -131,6 +134,9 @@ class SelectionPageState extends State<SelectionPage> {
       floatingActionButton: selecionadas.isNotEmpty
           ? FloatingActionButton.extended(
               onPressed: () {
+                for (var produto in selecionadas) {
+                  carrinho.add(produto);
+                }
                 Navigator.push(
                     context,
                     MaterialPageRoute(
